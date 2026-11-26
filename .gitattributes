@@ -1,0 +1,2 @@
+# Course-provided tools: exclude from GitHub language statistics
+utilities/** linguist-vendored
