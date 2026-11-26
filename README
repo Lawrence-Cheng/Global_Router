@@ -1,0 +1,33 @@
+This is README file for Algorithm PA#3
+Author: B10507057 鄭喆
+Date: 25/12/2025
+=====
+SYNOPSIS:
+
+This program solves routing problems on a two-layers map with two-pins nets.
+=====
+DIRECTORY:
+
+src/ graph.h
+     graph.cpp
+     grid.h 
+     grid.cpp
+     main.cpp
+     parser.h
+     parser.cpp
+     router.h
+     router.cpp
+     types.h
+bin/router
+doc/report.pdf
+makefile
+README
+======
+HOW TO COMPILE:
+
+    make clean
+    make
+======
+HOW TO RUN:
+
+    ./bin/router --cap case.cap --net case.net --out case.route
