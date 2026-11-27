@@ -4,6 +4,10 @@ A two-layer global router for two-pin nets, written in C++17. It uses negotiatio
 
 This was Programming Assignment 3 of the Algorithms course (Fall 2025) at National Taiwan University, Department of Electrical Engineering. The problem is modified from the ISPD 2024 Global Routing Contest.
 
+<p align="center">
+  <img src="figures/routing_case3.png" alt="Routing result of case3: 1,000 nets on a 100 by 100 grid, with horizontal wires in blue and vertical wires in orange" width="560">
+</p>
+
 ## Problem
 
 The routing region is a grid of global cells (GCells) on two metal layers, one horizontal and one vertical. Each GCell has a capacity. Each net connects two pins, and a path may move along a layer's preferred direction or change layers through a via.
@@ -69,6 +73,21 @@ All outputs pass the validity and connectivity checks of the course evaluator (`
 
 Runtimes were measured on a MacBook Air with `-O2`, running the six cases in parallel. The route files for case2 to case6 are in `outputs/`.
 
+### Convergence
+
+![Total overflow after each rip-up-and-reroute iteration for case4, case5, and case6](figures/convergence.png)
+
+- case4 stalls at an overflow of about 140 and then reaches zero at iteration 32, an iteration in which the stalled search runs Dijkstra instead of weighted A*.
+- case5 and case6 fall from 716 and 3,478 to 13 and then stop improving. The router ends the run after 30 iterations without a better result.
+
+### Congestion
+
+![Demand over capacity of every GCell in case6, per layer, with overflowing GCells circled](figures/congestion_case6.png)
+
+The 13 remaining overflows of case6 lie on the boundary of the grid, in 10 GCells of the horizontal layer and 3 of the vertical layer.
+
+The figures are drawn by `tools/plot_results.py` from the files in `inputs/` and `outputs/`.
+
 ## Build and run
 
 ```bash
@@ -93,7 +112,9 @@ Add `-plot` to the evaluator command to draw the routes.
 | `src/graph.*` | Grid graph and shortest-path search |
 | `src/grid.*`, `src/parser.*`, `src/types.h`, `src/main.cpp` | Grid model, input parsing, entry point |
 | `inputs/` | Test cases (`.cap` routing resources, `.net` netlists) |
-| `outputs/` | Routing solutions (`.route`) |
+| `outputs/` | Routing solutions (`.route`) and the router's iteration logs (`logs/`) |
+| `tools/plot_results.py` | Draws the figures in this README |
+| `figures/` | Routing map, congestion heatmap, convergence curve |
 | `utilities/` | Course evaluator, plotting script, submission checker |
 | `doc/report.pdf` | Report on data structures, cost function, and strategy |
 | `PA3.pdf` | Assignment specification |
